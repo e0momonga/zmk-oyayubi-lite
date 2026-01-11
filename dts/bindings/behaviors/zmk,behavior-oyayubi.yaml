@@ -1,0 +1,9 @@
+description: NICOLA Oyayubi Shift Behavior
+compatible: "zmk,behavior-oyayubi"
+include: [base]
+properties:
+  label:
+    type: string
+    required: true
+  "#binding-cells":
+    const: 1

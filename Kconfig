@@ -1,0 +1,5 @@
+config ZMK_BEHAVIOR_OYAYUBI
+    bool "Enable oyayubi (NICOLA thumb shift) behavior"
+    default y
+    help
+      Enable NICOLA thumb shift input behavior for Layer 7/8

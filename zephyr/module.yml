@@ -1,0 +1,4 @@
+name: zmk-oyayubi-lite
+build:
+  cmake: .
+  kconfig: Kconfig

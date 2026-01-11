@@ -1,0 +1,9 @@
+/ {
+    behaviors {
+        oy: behavior_oyayubi {
+            compatible = "zmk,behavior-oyayubi";
+            label = "OYAYUBI";
+            #binding-cells = <1>;
+        };
+    };
+};
