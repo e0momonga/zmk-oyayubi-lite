@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: MIT
  *
  * NICOLA Oyayubi (Thumb Shift) Input Behavior
- * Simplified implementation based on zmk-naginata
+ * Based on official NICOLA layout from https://forum.pc5bai.com/work/oya/layout/
  */
 
 #define DT_DRV_COMPAT zmk_behavior_oyayubi
@@ -16,58 +16,88 @@
 #include <zmk/behavior.h>
 #include <zmk/event_manager.h>
 #include <zmk/events/keycode_state_changed.h>
+#include <dt-bindings/zmk/keys.h>
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 // ===============================
 // 1. ビットマスク定義
 // ===============================
-#define B_1 (1UL << 0)
-#define B_2 (1UL << 1)
-#define B_3 (1UL << 2)
-#define B_4 (1UL << 3)
-#define B_5 (1UL << 4)
-#define B_6 (1UL << 5)
-#define B_7 (1UL << 6)
-#define B_8 (1UL << 7)
-#define B_9 (1UL << 8)
-#define B_0 (1UL << 9)
+#define B_Q (1UL << 0)
+#define B_W (1UL << 1)
+#define B_E (1UL << 2)
+#define B_R (1UL << 3)
+#define B_T (1UL << 4)
+#define B_Y (1UL << 5)
+#define B_U (1UL << 6)
+#define B_I (1UL << 7)
+#define B_O (1UL << 8)
+#define B_P (1UL << 9)
 
-#define B_Q (1UL << 10)
-#define B_W (1UL << 11)
-#define B_E (1UL << 12)
-#define B_R (1UL << 13)
-#define B_T (1UL << 14)
-#define B_Y (1UL << 15)
-#define B_U (1UL << 16)
-#define B_I (1UL << 17)
-#define B_O (1UL << 18)
-#define B_P (1UL << 19)
+#define B_A (1UL << 10)
+#define B_S (1UL << 11)
+#define B_D (1UL << 12)
+#define B_F (1UL << 13)
+#define B_G (1UL << 14)
+#define B_H (1UL << 15)
+#define B_J (1UL << 16)
+#define B_K (1UL << 17)
+#define B_L (1UL << 18)
+#define B_SEMICOLON (1UL << 19)
 
-#define B_A (1UL << 20)
-#define B_S (1UL << 21)
-#define B_D (1UL << 22)
-#define B_F (1UL << 23)
-#define B_G (1UL << 24)
-#define B_H (1UL << 25)
-#define B_J (1UL << 26)
-#define B_K (1UL << 27)
-#define B_L (1UL << 28)
-#define B_SEMICOLON (1UL << 29)
+#define B_Z (1UL << 20)
+#define B_X (1UL << 21)
+#define B_C (1UL << 22)
+#define B_V (1UL << 23)
+#define B_B (1UL << 24)
+#define B_N (1UL << 25)
+#define B_M (1UL << 26)
+#define B_COMMA (1UL << 27)
+#define B_DOT (1UL << 28)
+#define B_SLASH (1UL << 29)
 
 #define NONE 0
 
 // キーコードからビットマスクへの変換テーブル
-static uint32_t ng_key[] = {
-    B_A, B_A, B_A, B_A, B_A,  // 0-4
-    B_1, B_2, B_3, B_4, B_5, B_6, B_7, B_8, B_9, B_0,  // 5-14: numbers
-    B_A, B_A, B_A, B_A, B_A,  // 15-19
-    B_Q, B_W, B_E, B_R, B_T, B_Y, B_U, B_I, B_O, B_P,  // 20-29: QWERTY
-    B_A, B_S, B_D, B_F, B_G, B_H, B_J, B_K, B_L, B_SEMICOLON,  // 30-39: ASDFG...
-};
+static uint32_t ng_key[256] = {0};
 
 static uint32_t pressed_keys = 0UL;
 static int8_t n_pressed_keys = 0;
+
+static void init_key_table(void) {
+    ng_key[HID_USAGE_KEY_KEYBOARD_Q] = B_Q;
+    ng_key[HID_USAGE_KEY_KEYBOARD_W] = B_W;
+    ng_key[HID_USAGE_KEY_KEYBOARD_E] = B_E;
+    ng_key[HID_USAGE_KEY_KEYBOARD_R] = B_R;
+    ng_key[HID_USAGE_KEY_KEYBOARD_T] = B_T;
+    ng_key[HID_USAGE_KEY_KEYBOARD_Y] = B_Y;
+    ng_key[HID_USAGE_KEY_KEYBOARD_U] = B_U;
+    ng_key[HID_USAGE_KEY_KEYBOARD_I] = B_I;
+    ng_key[HID_USAGE_KEY_KEYBOARD_O] = B_O;
+    ng_key[HID_USAGE_KEY_KEYBOARD_P] = B_P;
+
+    ng_key[HID_USAGE_KEY_KEYBOARD_A] = B_A;
+    ng_key[HID_USAGE_KEY_KEYBOARD_S] = B_S;
+    ng_key[HID_USAGE_KEY_KEYBOARD_D] = B_D;
+    ng_key[HID_USAGE_KEY_KEYBOARD_F] = B_F;
+    ng_key[HID_USAGE_KEY_KEYBOARD_G] = B_G;
+    ng_key[HID_USAGE_KEY_KEYBOARD_H] = B_H;
+    ng_key[HID_USAGE_KEY_KEYBOARD_J] = B_J;
+    ng_key[HID_USAGE_KEY_KEYBOARD_K] = B_K;
+    ng_key[HID_USAGE_KEY_KEYBOARD_L] = B_L;
+    ng_key[HID_USAGE_KEY_KEYBOARD_SEMICOLON] = B_SEMICOLON;
+
+    ng_key[HID_USAGE_KEY_KEYBOARD_Z] = B_Z;
+    ng_key[HID_USAGE_KEY_KEYBOARD_X] = B_X;
+    ng_key[HID_USAGE_KEY_KEYBOARD_C] = B_C;
+    ng_key[HID_USAGE_KEY_KEYBOARD_V] = B_V;
+    ng_key[HID_USAGE_KEY_KEYBOARD_B] = B_B;
+    ng_key[HID_USAGE_KEY_KEYBOARD_N] = B_N;
+    ng_key[HID_USAGE_KEY_KEYBOARD_M] = B_M;
+    ng_key[HID_USAGE_KEY_KEYBOARD_COMMA] = B_COMMA;
+    ng_key[HID_USAGE_KEY_KEYBOARD_DOT] = B_DOT;
+    ng_key[HID_USAGE_KEY_KEYBOARD_SLASH] = B_SLASH;
+}
 
 // ===============================
 // 2. データ構造
@@ -80,79 +110,86 @@ typedef struct {
 
 // ===============================
 // 3. Layer 7用配列テーブル（左親指シフト）
+// Based on https://forum.pc5bai.com/work/oya/layout/
 // ===============================
 static const naginata_kanamap ngdickana_layer7[] = {
-    // 数字行
-    {.shift = NONE, .douji = B_2, .kana = {HID_USAGE_KEY_KEYBOARD_G, HID_USAGE_KEY_KEYBOARD_A, NONE, NONE, NONE, NONE}},  // が
-    {.shift = NONE, .douji = B_3, .kana = {HID_USAGE_KEY_KEYBOARD_D, HID_USAGE_KEY_KEYBOARD_A, NONE, NONE, NONE, NONE}},  // だ
-    {.shift = NONE, .douji = B_4, .kana = {HID_USAGE_KEY_KEYBOARD_G, HID_USAGE_KEY_KEYBOARD_O, NONE, NONE, NONE, NONE}},  // ご
-    {.shift = NONE, .douji = B_5, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_A, NONE, NONE, NONE, NONE}},  // ざ
-    {.shift = NONE, .douji = B_6, .kana = {HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_O, NONE, NONE, NONE, NONE}},  // よ
-    {.shift = NONE, .douji = B_7, .kana = {HID_USAGE_KEY_KEYBOARD_N, HID_USAGE_KEY_KEYBOARD_I, NONE, NONE, NONE, NONE}},  // に
-    {.shift = NONE, .douji = B_8, .kana = {HID_USAGE_KEY_KEYBOARD_R, HID_USAGE_KEY_KEYBOARD_U, NONE, NONE, NONE, NONE}},  // る
-    {.shift = NONE, .douji = B_9, .kana = {HID_USAGE_KEY_KEYBOARD_M, HID_USAGE_KEY_KEYBOARD_A, NONE, NONE, NONE, NONE}},  // ま
-    {.shift = NONE, .douji = B_0, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_E, NONE, NONE, NONE, NONE}},  // ぇ
+    // QWERTY上段 - 左親指シフト
+    // Q:゜ - 半濁点記号（実装省略）
+    {.shift = NONE, .douji = B_W, .kana = {HID_USAGE_KEY_KEYBOARD_G, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // W:が
+    {.shift = NONE, .douji = B_E, .kana = {HID_USAGE_KEY_KEYBOARD_D, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // E:だ
+    {.shift = NONE, .douji = B_R, .kana = {HID_USAGE_KEY_KEYBOARD_G, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // R:ご
+    {.shift = NONE, .douji = B_T, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // T:ざ
+    {.shift = NONE, .douji = B_Y, .kana = {HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // Y:よ
+    {.shift = NONE, .douji = B_U, .kana = {HID_USAGE_KEY_KEYBOARD_N, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // U:に
+    {.shift = NONE, .douji = B_I, .kana = {HID_USAGE_KEY_KEYBOARD_R, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // I:る
+    {.shift = NONE, .douji = B_O, .kana = {HID_USAGE_KEY_KEYBOARD_M, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // O:ま
+    {.shift = NONE, .douji = B_P, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // P:ぇ
 
-    // QWERTY上段
-    {.shift = NONE, .douji = B_Q, .kana = {HID_USAGE_KEY_KEYBOARD_V, HID_USAGE_KEY_KEYBOARD_U, NONE, NONE, NONE, NONE}},  // ゔ
-    {.shift = NONE, .douji = B_W, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_I, NONE, NONE, NONE, NONE}},  // じ
-    {.shift = NONE, .douji = B_E, .kana = {HID_USAGE_KEY_KEYBOARD_D, HID_USAGE_KEY_KEYBOARD_E, NONE, NONE, NONE, NONE}},  // で
-    {.shift = NONE, .douji = B_R, .kana = {HID_USAGE_KEY_KEYBOARD_G, HID_USAGE_KEY_KEYBOARD_E, NONE, NONE, NONE, NONE}},  // げ
-    {.shift = NONE, .douji = B_T, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_E, NONE, NONE, NONE, NONE}},  // ぜ
-    {.shift = NONE, .douji = B_Y, .kana = {HID_USAGE_KEY_KEYBOARD_M, HID_USAGE_KEY_KEYBOARD_I, NONE, NONE, NONE, NONE}},  // み
-    {.shift = NONE, .douji = B_U, .kana = {HID_USAGE_KEY_KEYBOARD_O, NONE, NONE, NONE, NONE, NONE}},  // お
-    {.shift = NONE, .douji = B_I, .kana = {HID_USAGE_KEY_KEYBOARD_N, HID_USAGE_KEY_KEYBOARD_O, NONE, NONE, NONE, NONE}},  // の
-    {.shift = NONE, .douji = B_O, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_O, NONE, NONE, NONE}},  // ょ
-    {.shift = NONE, .douji = B_P, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_T, HID_USAGE_KEY_KEYBOARD_U, NONE, NONE, NONE}},  // っ
+    // ASDFG中段 - 左親指シフト
+    {.shift = NONE, .douji = B_A, .kana = {HID_USAGE_KEY_KEYBOARD_V, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // A:ゔ
+    {.shift = NONE, .douji = B_S, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // S:じ
+    {.shift = NONE, .douji = B_D, .kana = {HID_USAGE_KEY_KEYBOARD_D, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // D:で
+    {.shift = NONE, .douji = B_F, .kana = {HID_USAGE_KEY_KEYBOARD_G, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // F:げ
+    {.shift = NONE, .douji = B_G, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // G:ぜ
+    {.shift = NONE, .douji = B_H, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // H:ば
+    {.shift = NONE, .douji = B_J, .kana = {HID_USAGE_KEY_KEYBOARD_D, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // J:ど
+    {.shift = NONE, .douji = B_K, .kana = {HID_USAGE_KEY_KEYBOARD_G, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // K:ぎ
+    {.shift = NONE, .douji = B_L, .kana = {HID_USAGE_KEY_KEYBOARD_P, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // L:ぽ
+    // ;:空白 - 実装省略
 
-    // ASDFGHJKL;中段
-    {.shift = NONE, .douji = B_S, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_I, NONE, NONE, NONE, NONE}},  // び
-    {.shift = NONE, .douji = B_D, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_U, NONE, NONE, NONE, NONE}},  // ず
-    {.shift = NONE, .douji = B_F, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_U, NONE, NONE, NONE, NONE}},  // ぶ
-    {.shift = NONE, .douji = B_G, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_E, NONE, NONE, NONE, NONE}},  // べ
-    {.shift = NONE, .douji = B_H, .kana = {HID_USAGE_KEY_KEYBOARD_N, HID_USAGE_KEY_KEYBOARD_U, NONE, NONE, NONE, NONE}},  // ぬ
-    {.shift = NONE, .douji = B_J, .kana = {HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_U, NONE, NONE, NONE, NONE}},  // ゆ
-    {.shift = NONE, .douji = B_K, .kana = {HID_USAGE_KEY_KEYBOARD_M, HID_USAGE_KEY_KEYBOARD_U, NONE, NONE, NONE, NONE}},  // む
-    {.shift = NONE, .douji = B_L, .kana = {HID_USAGE_KEY_KEYBOARD_W, HID_USAGE_KEY_KEYBOARD_A, NONE, NONE, NONE, NONE}},  // わ
-    {.shift = NONE, .douji = B_SEMICOLON, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_O, NONE, NONE, NONE, NONE}},  // ぉ
+    // ZXCVB下段 - 左親指シフト
+    {.shift = NONE, .douji = B_Z, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // Z:び
+    {.shift = NONE, .douji = B_X, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // X:ず
+    {.shift = NONE, .douji = B_C, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // C:ぶ
+    {.shift = NONE, .douji = B_V, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // V:べ
+    {.shift = NONE, .douji = B_B, .kana = {HID_USAGE_KEY_KEYBOARD_P, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // B:ぷ
+    {.shift = NONE, .douji = B_N, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // N:ぞ
+    {.shift = NONE, .douji = B_M, .kana = {HID_USAGE_KEY_KEYBOARD_P, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // M:ぺ
+    {.shift = NONE, .douji = B_COMMA, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // ,:ぼ
+    // .:゛ - 濁点記号（実装省略）
+    // /:空白 - 実装省略
 };
 
 // ===============================
 // 4. Layer 8用配列テーブル（右親指シフト）
+// Based on https://forum.pc5bai.com/work/oya/layout/
 // ===============================
 static const naginata_kanamap ngdickana_layer8[] = {
-    // 数字行
-    {.shift = NONE, .douji = B_1, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_A, NONE, NONE, NONE, NONE}},  // ぁ
-    {.shift = NONE, .douji = B_2, .kana = {HID_USAGE_KEY_KEYBOARD_E, NONE, NONE, NONE, NONE, NONE}},  // え
-    {.shift = NONE, .douji = B_3, .kana = {HID_USAGE_KEY_KEYBOARD_R, HID_USAGE_KEY_KEYBOARD_I, NONE, NONE, NONE, NONE}},  // り
-    {.shift = NONE, .douji = B_4, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_A, NONE, NONE, NONE}},  // ゃ
-    {.shift = NONE, .douji = B_5, .kana = {HID_USAGE_KEY_KEYBOARD_R, HID_USAGE_KEY_KEYBOARD_E, NONE, NONE, NONE, NONE}},  // れ
-    {.shift = NONE, .douji = B_6, .kana = {HID_USAGE_KEY_KEYBOARD_P, HID_USAGE_KEY_KEYBOARD_A, NONE, NONE, NONE, NONE}},  // ぱ
-    {.shift = NONE, .douji = B_7, .kana = {HID_USAGE_KEY_KEYBOARD_D, HID_USAGE_KEY_KEYBOARD_I, NONE, NONE, NONE, NONE}},  // ぢ
-    {.shift = NONE, .douji = B_8, .kana = {HID_USAGE_KEY_KEYBOARD_G, HID_USAGE_KEY_KEYBOARD_U, NONE, NONE, NONE, NONE}},  // ぐ
-    {.shift = NONE, .douji = B_9, .kana = {HID_USAGE_KEY_KEYBOARD_D, HID_USAGE_KEY_KEYBOARD_U, NONE, NONE, NONE, NONE}},  // づ
-    {.shift = NONE, .douji = B_0, .kana = {HID_USAGE_KEY_KEYBOARD_P, HID_USAGE_KEY_KEYBOARD_I, NONE, NONE, NONE, NONE}},  // ぴ
+    // QWERTY上段 - 右親指シフト
+    {.shift = NONE, .douji = B_Q, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // Q:ぁ
+    {.shift = NONE, .douji = B_W, .kana = {HID_USAGE_KEY_KEYBOARD_E, NONE}},  // W:え
+    {.shift = NONE, .douji = B_E, .kana = {HID_USAGE_KEY_KEYBOARD_R, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // E:り
+    {.shift = NONE, .douji = B_R, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // R:ゃ
+    {.shift = NONE, .douji = B_T, .kana = {HID_USAGE_KEY_KEYBOARD_R, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // T:れ
+    {.shift = NONE, .douji = B_Y, .kana = {HID_USAGE_KEY_KEYBOARD_P, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // Y:ぱ
+    {.shift = NONE, .douji = B_U, .kana = {HID_USAGE_KEY_KEYBOARD_D, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // U:ぢ
+    {.shift = NONE, .douji = B_I, .kana = {HID_USAGE_KEY_KEYBOARD_G, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // I:ぐ
+    {.shift = NONE, .douji = B_O, .kana = {HID_USAGE_KEY_KEYBOARD_D, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // O:づ
+    {.shift = NONE, .douji = B_P, .kana = {HID_USAGE_KEY_KEYBOARD_P, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // P:ぴ
 
-    // QWERTY上段
-    {.shift = NONE, .douji = B_Q, .kana = {HID_USAGE_KEY_KEYBOARD_W, HID_USAGE_KEY_KEYBOARD_O, NONE, NONE, NONE, NONE}},  // を
-    {.shift = NONE, .douji = B_W, .kana = {HID_USAGE_KEY_KEYBOARD_A, NONE, NONE, NONE, NONE, NONE}},  // あ
-    {.shift = NONE, .douji = B_E, .kana = {HID_USAGE_KEY_KEYBOARD_N, HID_USAGE_KEY_KEYBOARD_A, NONE, NONE, NONE, NONE}},  // な
-    {.shift = NONE, .douji = B_R, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_U, NONE, NONE, NONE}},  // ゅ
-    {.shift = NONE, .douji = B_T, .kana = {HID_USAGE_KEY_KEYBOARD_M, HID_USAGE_KEY_KEYBOARD_O, NONE, NONE, NONE, NONE}},  // も
-    {.shift = NONE, .douji = B_Y, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_A, NONE, NONE, NONE, NONE}},  // ば
-    {.shift = NONE, .douji = B_U, .kana = {HID_USAGE_KEY_KEYBOARD_D, HID_USAGE_KEY_KEYBOARD_O, NONE, NONE, NONE, NONE}},  // ど
-    {.shift = NONE, .douji = B_I, .kana = {HID_USAGE_KEY_KEYBOARD_G, HID_USAGE_KEY_KEYBOARD_I, NONE, NONE, NONE, NONE}},  // ぎ
-    {.shift = NONE, .douji = B_O, .kana = {HID_USAGE_KEY_KEYBOARD_P, HID_USAGE_KEY_KEYBOARD_O, NONE, NONE, NONE, NONE}},  // ぽ
+    // ASDFG中段 - 右親指シフト
+    {.shift = NONE, .douji = B_A, .kana = {HID_USAGE_KEY_KEYBOARD_W, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // A:を
+    {.shift = NONE, .douji = B_S, .kana = {HID_USAGE_KEY_KEYBOARD_A, NONE}},  // S:あ
+    {.shift = NONE, .douji = B_D, .kana = {HID_USAGE_KEY_KEYBOARD_N, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // D:な
+    {.shift = NONE, .douji = B_F, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // F:ゅ
+    {.shift = NONE, .douji = B_G, .kana = {HID_USAGE_KEY_KEYBOARD_M, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // G:も
+    {.shift = NONE, .douji = B_H, .kana = {HID_USAGE_KEY_KEYBOARD_M, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // H:み
+    {.shift = NONE, .douji = B_J, .kana = {HID_USAGE_KEY_KEYBOARD_O, NONE}},  // J:お
+    {.shift = NONE, .douji = B_K, .kana = {HID_USAGE_KEY_KEYBOARD_N, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // K:の
+    {.shift = NONE, .douji = B_L, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // L:ょ
+    {.shift = NONE, .douji = B_SEMICOLON, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_T, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // ;:っ
 
-    // ASDFGHJKL;中段
-    {.shift = NONE, .douji = B_A, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_U, NONE, NONE, NONE, NONE}},  // ぅ
-    {.shift = NONE, .douji = B_D, .kana = {HID_USAGE_KEY_KEYBOARD_R, HID_USAGE_KEY_KEYBOARD_O, NONE, NONE, NONE, NONE}},  // ろ
-    {.shift = NONE, .douji = B_F, .kana = {HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_A, NONE, NONE, NONE, NONE}},  // や
-    {.shift = NONE, .douji = B_G, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_I, NONE, NONE, NONE, NONE}},  // ぃ
-    {.shift = NONE, .douji = B_H, .kana = {HID_USAGE_KEY_KEYBOARD_P, HID_USAGE_KEY_KEYBOARD_U, NONE, NONE, NONE, NONE}},  // ぷ
-    {.shift = NONE, .douji = B_J, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_O, NONE, NONE, NONE, NONE}},  // ぞ
-    {.shift = NONE, .douji = B_K, .kana = {HID_USAGE_KEY_KEYBOARD_P, HID_USAGE_KEY_KEYBOARD_E, NONE, NONE, NONE, NONE}},  // ぺ
-    {.shift = NONE, .douji = B_L, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_O, NONE, NONE, NONE, NONE}},  // ぼ
+    // ZXCVB下段 - 右親指シフト
+    {.shift = NONE, .douji = B_Z, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // Z:ぅ
+    {.shift = NONE, .douji = B_X, .kana = {HID_USAGE_KEY_KEYBOARD_MINUS, NONE}},  // X:ー
+    {.shift = NONE, .douji = B_C, .kana = {HID_USAGE_KEY_KEYBOARD_R, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // C:ろ
+    {.shift = NONE, .douji = B_V, .kana = {HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // V:や
+    {.shift = NONE, .douji = B_B, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // B:ぃ
+    {.shift = NONE, .douji = B_N, .kana = {HID_USAGE_KEY_KEYBOARD_N, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // N:ぬ
+    {.shift = NONE, .douji = B_M, .kana = {HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // M:ゆ
+    {.shift = NONE, .douji = B_COMMA, .kana = {HID_USAGE_KEY_KEYBOARD_M, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // ,:む
+    {.shift = NONE, .douji = B_DOT, .kana = {HID_USAGE_KEY_KEYBOARD_W, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // .:わ
+    {.shift = NONE, .douji = B_SLASH, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // /:ぉ
 };
 
 #define LAYER7_SIZE (sizeof(ngdickana_layer7) / sizeof(ngdickana_layer7[0]))
@@ -161,13 +198,6 @@ static const naginata_kanamap ngdickana_layer8[] = {
 // ===============================
 // 5. 関数実装
 // ===============================
-
-// Layer番号を取得
-static int get_current_layer(const struct zmk_behavior_binding *binding,
-                             struct zmk_behavior_binding_event event) {
-    // 現在のレイヤーを取得（ZMK API使用）
-    return zmk_keymap_layer_active(event.layer);
-}
 
 // キー入力が何個のエントリにマッチするかカウント
 static int count_kana_entries(uint32_t keyset, int layer) {
@@ -228,8 +258,7 @@ static int on_keymap_binding_pressed(struct zmk_behavior_binding *binding,
     uint32_t keycode = binding->param1;
     int layer = event.layer;
 
-    // キーコードからビットマスクに変換
-    if (keycode < sizeof(ng_key) / sizeof(ng_key[0])) {
+    if (keycode < 256 && ng_key[keycode] != 0) {
         pressed_keys |= ng_key[keycode];
         n_pressed_keys++;
 
@@ -251,8 +280,7 @@ static int on_keymap_binding_released(struct zmk_behavior_binding *binding,
     uint32_t keycode = binding->param1;
     int layer = event.layer;
 
-    // キーコードからビットマスクに変換
-    if (keycode < sizeof(ng_key) / sizeof(ng_key[0])) {
+    if (keycode < 256 && ng_key[keycode] != 0) {
         pressed_keys &= ~ng_key[keycode];
         n_pressed_keys--;
 
@@ -275,6 +303,7 @@ static const struct behavior_driver_api behavior_oyayubi_driver_api = {
 };
 
 static int behavior_oyayubi_init(const struct device *dev) {
+    init_key_table();
     return 0;
 }
 
