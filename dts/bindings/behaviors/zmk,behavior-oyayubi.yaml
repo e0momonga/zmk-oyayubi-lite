@@ -1,9 +1,3 @@
 description: NICOLA Oyayubi Shift Behavior
 compatible: "zmk,behavior-oyayubi"
 include: one_param.yaml
-properties:
-  label:
-    type: string
-    required: true
-  "#binding-cells":
-    const: 1
