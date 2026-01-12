@@ -111,51 +111,10 @@ typedef struct {
 // ===============================
 // 3. Layer 7用配列テーブル（左親指シフト）
 // Based on https://forum.pc5bai.com/work/oya/layout/
+// 公式NICOLA: ぁえりゃれ/をあなゅも/ぅーろやぃ/ぱぢぐづぴ/ばどぎぽ/ぷぞぺぼ
 // ===============================
 static const naginata_kanamap ngdickana_layer7[] = {
-    // QWERTY上段 - 左親指シフト
-    // Q:゜ - 半濁点記号（実装省略）
-    {.shift = NONE, .douji = B_W, .kana = {HID_USAGE_KEY_KEYBOARD_G, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // W:が
-    {.shift = NONE, .douji = B_E, .kana = {HID_USAGE_KEY_KEYBOARD_D, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // E:だ
-    {.shift = NONE, .douji = B_R, .kana = {HID_USAGE_KEY_KEYBOARD_G, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // R:ご
-    {.shift = NONE, .douji = B_T, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // T:ざ
-    {.shift = NONE, .douji = B_Y, .kana = {HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // Y:よ
-    {.shift = NONE, .douji = B_U, .kana = {HID_USAGE_KEY_KEYBOARD_N, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // U:に
-    {.shift = NONE, .douji = B_I, .kana = {HID_USAGE_KEY_KEYBOARD_R, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // I:る
-    {.shift = NONE, .douji = B_O, .kana = {HID_USAGE_KEY_KEYBOARD_M, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // O:ま
-    {.shift = NONE, .douji = B_P, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // P:ぇ
-
-    // ASDFG中段 - 左親指シフト
-    {.shift = NONE, .douji = B_A, .kana = {HID_USAGE_KEY_KEYBOARD_V, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // A:ゔ
-    {.shift = NONE, .douji = B_S, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // S:じ
-    {.shift = NONE, .douji = B_D, .kana = {HID_USAGE_KEY_KEYBOARD_D, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // D:で
-    {.shift = NONE, .douji = B_F, .kana = {HID_USAGE_KEY_KEYBOARD_G, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // F:げ
-    {.shift = NONE, .douji = B_G, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // G:ぜ
-    {.shift = NONE, .douji = B_H, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // H:ば
-    {.shift = NONE, .douji = B_J, .kana = {HID_USAGE_KEY_KEYBOARD_D, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // J:ど
-    {.shift = NONE, .douji = B_K, .kana = {HID_USAGE_KEY_KEYBOARD_G, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // K:ぎ
-    {.shift = NONE, .douji = B_L, .kana = {HID_USAGE_KEY_KEYBOARD_P, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // L:ぽ
-    // ;:空白 - 実装省略
-
-    // ZXCVB下段 - 左親指シフト
-    {.shift = NONE, .douji = B_Z, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // Z:び
-    {.shift = NONE, .douji = B_X, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // X:ず
-    {.shift = NONE, .douji = B_C, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // C:ぶ
-    {.shift = NONE, .douji = B_V, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // V:べ
-    {.shift = NONE, .douji = B_B, .kana = {HID_USAGE_KEY_KEYBOARD_P, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // B:ぷ
-    {.shift = NONE, .douji = B_N, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // N:ぞ
-    {.shift = NONE, .douji = B_M, .kana = {HID_USAGE_KEY_KEYBOARD_P, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // M:ぺ
-    {.shift = NONE, .douji = B_COMMA, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // ,:ぼ
-    // .:゛ - 濁点記号（実装省略）
-    // /:空白 - 実装省略
-};
-
-// ===============================
-// 4. Layer 8用配列テーブル（右親指シフト）
-// Based on https://forum.pc5bai.com/work/oya/layout/
-// ===============================
-static const naginata_kanamap ngdickana_layer8[] = {
-    // QWERTY上段 - 右親指シフト
+    // QWERTY上段 - 左親指シフト: ぁえりゃれ/ぱぢぐづぴ
     {.shift = NONE, .douji = B_Q, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // Q:ぁ
     {.shift = NONE, .douji = B_W, .kana = {HID_USAGE_KEY_KEYBOARD_E, NONE}},  // W:え
     {.shift = NONE, .douji = B_E, .kana = {HID_USAGE_KEY_KEYBOARD_R, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // E:り
@@ -167,24 +126,66 @@ static const naginata_kanamap ngdickana_layer8[] = {
     {.shift = NONE, .douji = B_O, .kana = {HID_USAGE_KEY_KEYBOARD_D, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // O:づ
     {.shift = NONE, .douji = B_P, .kana = {HID_USAGE_KEY_KEYBOARD_P, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // P:ぴ
 
-    // ASDFG中段 - 右親指シフト
+    // ASDFG中段 - 左親指シフト: をあなゅも/ばどぎぽ
     {.shift = NONE, .douji = B_A, .kana = {HID_USAGE_KEY_KEYBOARD_W, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // A:を
     {.shift = NONE, .douji = B_S, .kana = {HID_USAGE_KEY_KEYBOARD_A, NONE}},  // S:あ
     {.shift = NONE, .douji = B_D, .kana = {HID_USAGE_KEY_KEYBOARD_N, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // D:な
     {.shift = NONE, .douji = B_F, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // F:ゅ
     {.shift = NONE, .douji = B_G, .kana = {HID_USAGE_KEY_KEYBOARD_M, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // G:も
-    {.shift = NONE, .douji = B_H, .kana = {HID_USAGE_KEY_KEYBOARD_M, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // H:み
-    {.shift = NONE, .douji = B_J, .kana = {HID_USAGE_KEY_KEYBOARD_O, NONE}},  // J:お
-    {.shift = NONE, .douji = B_K, .kana = {HID_USAGE_KEY_KEYBOARD_N, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // K:の
-    {.shift = NONE, .douji = B_L, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // L:ょ
+    {.shift = NONE, .douji = B_H, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // H:ば
+    {.shift = NONE, .douji = B_J, .kana = {HID_USAGE_KEY_KEYBOARD_D, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // J:ど
+    {.shift = NONE, .douji = B_K, .kana = {HID_USAGE_KEY_KEYBOARD_G, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // K:ぎ
+    {.shift = NONE, .douji = B_L, .kana = {HID_USAGE_KEY_KEYBOARD_P, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // L:ぽ
     {.shift = NONE, .douji = B_SEMICOLON, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_T, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // ;:っ
 
-    // ZXCVB下段 - 右親指シフト
+    // ZXCVB下段 - 左親指シフト: ぅーろやぃ/ぷぞぺぼ
     {.shift = NONE, .douji = B_Z, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // Z:ぅ
     {.shift = NONE, .douji = B_X, .kana = {HID_USAGE_KEY_KEYBOARD_MINUS, NONE}},  // X:ー
     {.shift = NONE, .douji = B_C, .kana = {HID_USAGE_KEY_KEYBOARD_R, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // C:ろ
     {.shift = NONE, .douji = B_V, .kana = {HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // V:や
     {.shift = NONE, .douji = B_B, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // B:ぃ
+    {.shift = NONE, .douji = B_N, .kana = {HID_USAGE_KEY_KEYBOARD_P, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // N:ぷ
+    {.shift = NONE, .douji = B_M, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // M:ぞ
+    {.shift = NONE, .douji = B_COMMA, .kana = {HID_USAGE_KEY_KEYBOARD_P, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // ,:ぺ
+    {.shift = NONE, .douji = B_DOT, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // .:ぼ
+    // /:゛ - 濁点記号（実装省略）
+};
+
+// ===============================
+// 4. Layer 8用配列テーブル（右親指シフト）
+// Based on https://forum.pc5bai.com/work/oya/layout/
+// 公式NICOLA: がだござ/ゔじでげぜ/びずぶべ/よにるまぇ/みおのょっ/ぬゆむわぉ
+// ===============================
+static const naginata_kanamap ngdickana_layer8[] = {
+    // QWERTY上段 - 右親指シフト: ゜がだござ/よにるまぇ (゜は省略)
+    {.shift = NONE, .douji = B_W, .kana = {HID_USAGE_KEY_KEYBOARD_G, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // W:が
+    {.shift = NONE, .douji = B_E, .kana = {HID_USAGE_KEY_KEYBOARD_D, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // E:だ
+    {.shift = NONE, .douji = B_R, .kana = {HID_USAGE_KEY_KEYBOARD_G, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // R:ご
+    {.shift = NONE, .douji = B_T, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // T:ざ
+    {.shift = NONE, .douji = B_Y, .kana = {HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // Y:よ
+    {.shift = NONE, .douji = B_U, .kana = {HID_USAGE_KEY_KEYBOARD_N, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // U:に
+    {.shift = NONE, .douji = B_I, .kana = {HID_USAGE_KEY_KEYBOARD_R, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // I:る
+    {.shift = NONE, .douji = B_O, .kana = {HID_USAGE_KEY_KEYBOARD_M, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // O:ま
+    {.shift = NONE, .douji = B_P, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // P:ぇ
+
+    // ASDFG中段 - 右親指シフト: ゔじでげぜ/みおのょっ
+    {.shift = NONE, .douji = B_A, .kana = {HID_USAGE_KEY_KEYBOARD_V, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // A:ゔ
+    {.shift = NONE, .douji = B_S, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // S:じ
+    {.shift = NONE, .douji = B_D, .kana = {HID_USAGE_KEY_KEYBOARD_D, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // D:で
+    {.shift = NONE, .douji = B_F, .kana = {HID_USAGE_KEY_KEYBOARD_G, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // F:げ
+    {.shift = NONE, .douji = B_G, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // G:ぜ
+    {.shift = NONE, .douji = B_H, .kana = {HID_USAGE_KEY_KEYBOARD_M, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // H:み
+    {.shift = NONE, .douji = B_J, .kana = {HID_USAGE_KEY_KEYBOARD_O, NONE}},  // J:お
+    {.shift = NONE, .douji = B_K, .kana = {HID_USAGE_KEY_KEYBOARD_N, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // K:の
+    {.shift = NONE, .douji = B_L, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // L:ょ
+    // ;:空白 - 実装省略
+
+    // ZXCVB下段 - 右親指シフト: びずぶべ（空）/ぬゆむわぉ
+    {.shift = NONE, .douji = B_Z, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // Z:び
+    {.shift = NONE, .douji = B_X, .kana = {HID_USAGE_KEY_KEYBOARD_Z, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // X:ず
+    {.shift = NONE, .douji = B_C, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // C:ぶ
+    {.shift = NONE, .douji = B_V, .kana = {HID_USAGE_KEY_KEYBOARD_B, HID_USAGE_KEY_KEYBOARD_E, NONE}},  // V:べ
+    // B:空白 - 実装省略
     {.shift = NONE, .douji = B_N, .kana = {HID_USAGE_KEY_KEYBOARD_N, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // N:ぬ
     {.shift = NONE, .douji = B_M, .kana = {HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // M:ゆ
     {.shift = NONE, .douji = B_COMMA, .kana = {HID_USAGE_KEY_KEYBOARD_M, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // ,:む
