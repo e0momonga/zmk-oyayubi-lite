@@ -1,5 +1,4 @@
 if(CONFIG_ZMK_BEHAVIOR_OYAYUBI)
-  zephyr_library()
-  zephyr_library_sources(src/behaviors/behavior_oyayubi.c)
-  zephyr_library_include_directories(include)
+  target_sources(app PRIVATE src/behaviors/behavior_oyayubi.c)
 endif()
+zephyr_include_directories(include)
