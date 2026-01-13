@@ -85,7 +85,7 @@ static void init_key_table(void) {
     ng_key[HID_USAGE_KEY_KEYBOARD_J] = B_J;
     ng_key[HID_USAGE_KEY_KEYBOARD_K] = B_K;
     ng_key[HID_USAGE_KEY_KEYBOARD_L] = B_L;
-    ng_key[HID_USAGE_KEY_KEYBOARD_SEMICOLON] = B_SEMICOLON;
+    ng_key[HID_USAGE_KEY_KEYBOARD_SEMICOLON_AND_COLON] = B_SEMICOLON;
 
     ng_key[HID_USAGE_KEY_KEYBOARD_Z] = B_Z;
     ng_key[HID_USAGE_KEY_KEYBOARD_X] = B_X;
@@ -94,9 +94,9 @@ static void init_key_table(void) {
     ng_key[HID_USAGE_KEY_KEYBOARD_B] = B_B;
     ng_key[HID_USAGE_KEY_KEYBOARD_N] = B_N;
     ng_key[HID_USAGE_KEY_KEYBOARD_M] = B_M;
-    ng_key[HID_USAGE_KEY_KEYBOARD_COMMA] = B_COMMA;
-    ng_key[HID_USAGE_KEY_KEYBOARD_DOT] = B_DOT;
-    ng_key[HID_USAGE_KEY_KEYBOARD_SLASH] = B_SLASH;
+    ng_key[HID_USAGE_KEY_KEYBOARD_COMMA_AND_LESS_THAN] = B_COMMA;
+    ng_key[HID_USAGE_KEY_KEYBOARD_PERIOD_AND_GREATER_THAN] = B_DOT;
+    ng_key[HID_USAGE_KEY_KEYBOARD_SLASH_AND_QUESTION_MARK] = B_SLASH;
 }
 
 // ===============================
@@ -140,7 +140,7 @@ static const naginata_kanamap ngdickana_layer7[] = {
 
     // ZXCVB下段 - 左親指シフト: ぅーろやぃ/ぷぞぺぼ
     {.shift = NONE, .douji = B_Z, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_U, NONE}},  // Z:ぅ
-    {.shift = NONE, .douji = B_X, .kana = {HID_USAGE_KEY_KEYBOARD_MINUS, NONE}},  // X:ー
+    {.shift = NONE, .douji = B_X, .kana = {HID_USAGE_KEY_KEYBOARD_MINUS_AND_UNDERSCORE, NONE}},  // X:ー
     {.shift = NONE, .douji = B_C, .kana = {HID_USAGE_KEY_KEYBOARD_R, HID_USAGE_KEY_KEYBOARD_O, NONE}},  // C:ろ
     {.shift = NONE, .douji = B_V, .kana = {HID_USAGE_KEY_KEYBOARD_Y, HID_USAGE_KEY_KEYBOARD_A, NONE}},  // V:や
     {.shift = NONE, .douji = B_B, .kana = {HID_USAGE_KEY_KEYBOARD_X, HID_USAGE_KEY_KEYBOARD_I, NONE}},  // B:ぃ
